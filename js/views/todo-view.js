@@ -62,10 +62,29 @@ var app = app || {};
 			this.$el.toggleClass('hidden', this.isHidden());
 		},
 
+		// Hide todos based on route fragment
 		isHidden: function () {
-			return this.model.get('completed') ?
+			var route = Backbone.history.getFragment();
+
+			switch(route) {
+				case 'completed':
+				return this.model.get('completed') ?
 				app.TodoFilter === 'active' :
 				app.TodoFilter === 'completed';
+
+				case 'active':
+				return this.model.get('completed') ?
+				app.TodoFilter === 'active' :
+				app.TodoFilter === "completed";
+
+				case 'priority':
+				return this.model.get('priority') ?
+				app.TodoFilter === '' :
+				app.TodoFilter === 'priority';
+
+				default:
+				return false;
+			}
 		},
 
 		// Toggle the `"completed"` state of the model.
